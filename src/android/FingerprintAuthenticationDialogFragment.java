@@ -83,6 +83,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
             mFingerprintTitle.setText(getString(fingerprint_auth_dialog_title_id));
             getDialog().setTitle(getString(fingerprint_auth_dialog_title_id));
         }
+        mFingerprintTitle.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
         getDialog().setCanceledOnTouchOutside(false);
         setCancelable(false);
