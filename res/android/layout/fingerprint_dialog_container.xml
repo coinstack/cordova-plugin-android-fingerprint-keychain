@@ -46,14 +46,9 @@
         android:paddingEnd="12dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:gravity="bottom"
+        android:gravity="right"
         style="?android:attr/buttonBarStyle">
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:visibility="invisible" />
+    
         <Button
             android:id="@+id/cancel_button"
             style="?android:attr/buttonBarNegativeButtonStyle"
