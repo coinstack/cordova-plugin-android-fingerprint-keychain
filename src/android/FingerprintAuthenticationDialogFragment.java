@@ -73,7 +73,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
         TextView mFingerprintTitle = (TextView) v.findViewById(fingerprint_title_id);
 
         if (this.locale != null) {
-            mFingerprintTitle.setText("지문인식");
+           mFingerprintTitle.setText(this.locale.titleText);
             getDialog().setTitle(this.locale.titleText);
         } else {
             mFingerprintTitle.setText(this.locale.titleText);
@@ -116,7 +116,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
             int fingerprint_hint_id = getResources()
                     .getIdentifier("fingerprint_status", "id", FingerprintScanner.packageName);
             TextView mFingerprintHint = (TextView) v.findViewById(fingerprint_hint_id);
-            mFingerprintHint.setText("지문인식을 하여 개인인증을 해주세요");
+            mFingerprintHint.setText(this.locale.hintText);
 
             mFingerprintUiHelper.setLocale(this.locale);
         }
