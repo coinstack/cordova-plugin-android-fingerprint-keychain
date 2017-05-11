@@ -187,7 +187,7 @@ public class FingerprintUiHelper extends FingerprintManagerCompat.Authentication
         
         switch (errCode) {
             case 7: 
-                mErrorTextView.setText("지문인식에 실패하였습니다. 잠시후에 다시 시도해주세요");
+                mErrorTextView.setText(locale.tooManyTries);
                 break;
             default:
                 mErrorTextView.setText(error);
@@ -210,7 +210,7 @@ public class FingerprintUiHelper extends FingerprintManagerCompat.Authentication
             int fingerprint_hint_id = mContext.getResources()
                     .getIdentifier("fingerprint_hint", "string", FingerprintScanner.packageName);
             if (locale != null) {
-                mErrorTextView.setText("지문인식을 하여 개인인증을 해주세요");
+                mErrorTextView.setText(locale.hintText);
             } else {
                 mErrorTextView.setText(
                         mErrorTextView.getResources().getString(fingerprint_hint_id));
