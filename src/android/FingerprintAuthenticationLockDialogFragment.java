@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,22 +69,32 @@ public class FingerprintAuthenticationLockDialogFragment extends DialogFragment
         Bundle args = getArguments();
         Log.d(TAG, "disableBackup: " + FingerprintScanner.mDisableBackup);
 
-        if (this.locale != null) {
-            getDialog().setTitle(this.locale.titleText);
-        } else {
-            int fingerprint_auth_dialog_title_id = getResources()
-                    .getIdentifier("fingerprint_auth_lock_dialog_title", "string",
-                            FingerprintScanner.packageName);
-            getDialog().setTitle(getString(fingerprint_auth_dialog_title_id));
-        }
-
-        getDialog().setCanceledOnTouchOutside(false);
-        setCancelable(false);
-
         int fingerprint_dialog_container_id = getResources()
                 .getIdentifier("fingerprint_lock_dialog_container", "layout",
                         FingerprintScanner.packageName);
         View v = inflater.inflate(fingerprint_dialog_container_id, container, false);
+        
+       int fingerprint_title_id = getResources()
+                    .getIdentifier("fingerprint_auth_lock_dialog_title", "id", FingerprintScanner.packageName);
+        TextView mFingerprintTitle = (TextView) v.findViewById(fingerprint_title_id);
+
+        if (this.locale != null) {
+             mFingerprintTitle.setText(this.locale.titleText);
+            getDialog().setTitle(this.locale.titleText);
+        } else {
+            mFingerprintTitle.setText(this.locale.titleText);
+            int fingerprint_auth_dialog_title_id = getResources()
+                    .getIdentifier("fingerprint_auth_lock_dialog_title", "string",
+                            FingerprintScanner.packageName);
+            mFingerprintTitle.setText(getString(fingerprint_auth_dialog_title_id));
+            getDialog().setTitle(getString(fingerprint_auth_dialog_title_id));
+        }
+        mFingerprintTitle.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+
+
+        getDialog().setCanceledOnTouchOutside(false);
+        setCancelable(false);
+
         int cancel_button_id = getResources()
                 .getIdentifier("lock_cancel_button", "id", FingerprintScanner.packageName);
         mCancelButton = (Button) v.findViewById(cancel_button_id);

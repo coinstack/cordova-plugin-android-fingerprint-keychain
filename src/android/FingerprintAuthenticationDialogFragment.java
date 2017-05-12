@@ -113,6 +113,11 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
                 (TextView) v.findViewById(fingerprint_status_id), this);
 
         if (this.locale != null) {
+            int fingerprint_description_id = getResources()
+                    .getIdentifier("fingerprint_description", "id", FingerprintScanner.packageName);
+            TextView mFingerprintDescription = (TextView) v.findViewById(fingerprint_description_id);
+            mFingerprintDescription.setText(this.locale.descText);
+            
             int fingerprint_hint_id = getResources()
                     .getIdentifier("fingerprint_status", "id", FingerprintScanner.packageName);
             TextView mFingerprintHint = (TextView) v.findViewById(fingerprint_hint_id);
