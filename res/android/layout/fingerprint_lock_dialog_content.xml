@@ -16,7 +16,7 @@
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fingerprint_lock_container"
-    android:layout_width="280dp"
+    android:layout_width="80%"
     android:layout_height="match_parent"
     android:paddingBottom="8dp"
     android:paddingStart="24dp"
