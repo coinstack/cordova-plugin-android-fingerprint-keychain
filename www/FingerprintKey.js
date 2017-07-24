@@ -1,6 +1,6 @@
 (function () {
     function createKeyFromHexSeed(seed) {
-        return CoinStack.Util.bitcoin().HDNode.fromSeedHex(seed, CoinStack.Util.bitcoin().networks.bitcoin).privKey.toWIF()
+        return CoinStack.Util.bitcoin().HDNode.fromSeedHex(seed, CoinStack.Util.bitcoin().networks.bitcoin).privKey.toWIF();
     }
 
     function FingerprintKey() {}
@@ -28,31 +28,51 @@
         PLUGIN_NOT_LOADED: {
             code: -104,
             message: "Fingerprint plugin is not loaded",
+        },
+        CANCELED: {
+          code: -201,
+          message: "FingerprintThe operation was canceled because the fingerprint sensor is unavailable. For example, this may happen when the user is switched, the device is locked or another pending operation prevents or disables it."
+        },
+        HW_UNAVAILABLE: {
+          code: -202,
+          message: "The hardware is unavailable. Try again later."
+        },
+        NO_SPACE: {
+          code: -203,
+          message: "Not enough storage remaining to complete the operation."
+        },
+        TIMEOUT: {
+          code: -204,
+          message: "Error state returned when the current request has been running too long."
+        },
+        UNABLE_TO_PROCESS: {
+          code: -205,
+          message: "Error state returned when the sensor was unable to process the current image."
         }
-    }
+    };
 
     FingerprintKey.prototype.errors = errors;
 
     var status = {
 
-    }
+    };
 
     FingerprintKey.prototype.status = status;
 
-    var statePrefix = "blockfingerprintkey_state_"
+    var statePrefix = "blockfingerprintkey_state_";
     FingerprintKey.prototype.getState = function (key) {
         if (!key) {
             key = "";
         }
         return localStorage.getItem(statePrefix + key);
-    }
+    };
 
     FingerprintKey.prototype.setState = function (key, state) {
         if (!key) {
             key = "";
         }
         return localStorage.setItem(statePrefix + key, state);
-    }
+    };
 
     // provision indexed storage
     var request = {};
@@ -63,7 +83,7 @@
         };
 
         request.onsuccess = function (event) {
-            console.log("succsss")
+            console.log("succsss");
             var db = event.target.result;
             var store = db.createObjectStore("states", {
                 keyPath: "key"
@@ -94,7 +114,7 @@
             request.onerror = function (event) {
                 db.close();
                 callback(new Error("failed to accesss idxdb"));
-            }
+            };
             request.onsuccess = function (event) {
                 db.close();
                 if (request.result) {
@@ -102,9 +122,9 @@
                 } else {
                     callback(null, localStorage.getItem(statePrefix + key));
                 }
-            }
-        }
-    }
+            };
+        };
+    };
 
     FingerprintKey.prototype.setStateAsync = function (key, state, callback) {
         if (!key) {
@@ -128,10 +148,9 @@
             request.onerror = function (event) {
                 db.close();
                 callback(new Error("failed to accesss idxdb"));
-            }
-        }
-
-    }
+            };
+        };
+    };
 
 
     var pluginLoaded = false;
@@ -156,7 +175,7 @@
 
         FingerprintKey.prototype.getDevice = function () {
             return "iOS";
-        }
+        };
         FingerprintKey.prototype.initKey = function (params, successCallback, errorCallback) {
             if (!checkPlugin()) {
                 errorCallback({
@@ -237,15 +256,15 @@
                             }, errorCallback, "TouchID", "fetchKey", [params.keyId, params.message]);
                     }
                 } else {
-                    var result = {};
-                    result.status = "error";
-                    result.error = errors.FINGERPRINT_NOT_AVAILABLE;
+                    var result2 = {};
+                    result2.status = "error";
+                    result2.error = errors.FINGERPRINT_NOT_AVAILABLE;
                     if (res2.isHardwareDetected) {
-                        result.cause = "Enrolled fingerprint not available";
+                        result2.cause = "Enrolled fingerprint not available";
                     } else {
-                        result.cause = "HW not available";
+                        result2.cause = "HW not available";
                     }
-                    successCallback(result);
+                    successCallback(result2);
                 }
             }, function (err) {
                 errorCallback(err);
@@ -291,7 +310,7 @@
 
         FingerprintKey.prototype.getDevice = function () {
             return "Android";
-        }
+        };
         FingerprintKey.prototype.lock = function (params, successCallback, errorCallback) {
             if (!checkPlugin()) {
                 errorCallback({
@@ -319,6 +338,7 @@
                 });
                 return;
             }
+
             cordova.exec(
                 function (res) {
                     if (res.status == "ok") {
@@ -327,6 +347,16 @@
                         res.cause = res.error;
                         if (res.error == 7) {
                             res.error = errors.TOO_MANY_TRIES;
+                        } else if (res.error == 1) {
+                          res.error = errors.HW_UNAVAILABLE;
+                        } else if (res.error == 2) {
+                          res.error = errors.UNABLE_TO_PROCESS;
+                        } else if (res.error == 3) {
+                          res.error = errors.TIMEOUT;
+                        } else if (res.error == 4) {
+                          res.error = errors.NO_SPACE;
+                        } else if (res.error == 5) {
+                          res.error = errors.CANCELED;
                         } else if (res.error == -314) {
                             res.error = errors.KEY_NOT_FOUND;
                         } else {
@@ -360,6 +390,16 @@
                         res.cause = res.error;
                         if (res.error == 7) {
                             res.error = errors.TOO_MANY_TRIES;
+                        } else if (res.error == 1) {
+                          res.error = errors.HW_UNAVAILABLE;
+                        } else if (res.error == 2) {
+                          res.error = errors.UNABLE_TO_PROCESS;
+                        } else if (res.error == 3) {
+                          res.error = errors.TIMEOUT;
+                        } else if (res.error == 4) {
+                          res.error = errors.NO_SPACE;
+                        } else if (res.error == 5) {
+                          res.error = errors.CANCELED;
                         } else if (res.error == -314) {
                             res.error = errors.KEY_NOT_FOUND;
                         } else {
